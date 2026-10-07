@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Bloqué — Bloqueur Streams</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; padding: 20px; color: #1f2937;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 40px;
+      max-width: 540px; width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+    .icon {
+      font-size: 72px;
+      margin-bottom: 16px;
+      display: inline-block;
+      animation: shake 0.6s ease-in-out infinite alternate;
+    }
+    @keyframes shake {
+      from { transform: rotate(-6deg); }
+      to   { transform: rotate(6deg); }
+    }
+
+    h1 {
+      color: #d32f2f;
+      margin-bottom: 12px;
+      font-size: 28px;
+    }
+
+    p { line-height: 1.6; font-size: 15px; color: #4b5563; }
+
+    .blocked-url {
+      background: #fef2f2;
+      border-left: 4px solid #d32f2f;
+      padding: 12px 16px;
+      margin: 20px 0;
+      border-radius: 4px;
+      text-align: left;
+      word-break: break-all;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 13px;
+      color: #991b1b;
+    }
+    .blocked-url strong { display: block; font-family: inherit; color: #d32f2f; font-size: 12px; margin-bottom: 4px; }
+
+    .reasons {
+      background: #fef2f2;
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin: 16px 0;
+      text-align: left;
+    }
+    .reasons h3 { color: #d32f2f; font-size: 13px; margin-bottom: 8px; }
+    .reasons ul { padding-left: 20px; font-size: 13px; color: #4b5563; }
+    .reasons li { margin-bottom: 4px; }
+
+    .warning-text {
+      color: #d32f2f;
+      font-weight: 700;
+      margin: 18px 0;
+    }
+
+    .actions {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    button {
+      padding: 11px 22px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, background .15s;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: #16a34a; color: white;
+    }
+    .btn-primary:hover { background: #15803d; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(22,163,74,0.3); }
+    .btn-secondary { background: #f3f4f6; color: #4b5563; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .btn-danger { background: #fecaca; color: #991b1b; }
+    .btn-danger:hover { background: #fca5a5; }
+
+    .footer {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 12px; color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">⚠️</div>
+    <h1>Site bloqué</h1>
+    <p>Ce site a été identifié comme potentiellement malveillant et a été bloqué pour votre sécurité.</p>
+
+    <div class="blocked-url" id="blockedUrlBox" hidden>
+      <strong>URL bloquée :</strong>
+      <span id="blockedUrl"></span>
+    </div>
+
+    <div class="reasons">
+      <h3>Raisons possibles :</h3>
+      <ul>
+        <li>Domaine connu pour distribuer des contenus de streaming non autorisés</li>
+        <li>Risque de malwares, scripts mineurs ou redirections forcées</li>
+        <li>URL correspondant à un motif suspect (tracker, raccourcisseur)</li>
+        <li>Contenu frauduleux ou de phishing potentiel</li>
+      </ul>
+    </div>
+
+    <p class="warning-text">Nous recommandons de ne pas continuer vers ce site.</p>
+
+    <div class="actions">
+      <button class="btn-primary" id="btnBack">← Retour</button>
+      <button class="btn-secondary" id="btnHome">🏠 Page d'accueil</button>
+      <button class="btn-danger" id="btnAllow" hidden>Autoriser ce domaine</button>
+    </div>
+
+    <div class="footer">
+      <p>Bloqueur Streams Malveillants — votre sécurité en ligne</p>
+    </div>
+  </div>
+
+  <script src="warning.js"></script>
+</body>
+</html>

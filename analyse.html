@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Analyse de risque — Bloqueur Streams</title>
+  <link rel="stylesheet" href="analyse.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <h1>🔍 Analyse de risque</h1>
+      <button id="rescanBtn" class="btn-rescan" title="Relancer l'analyse">↻ Relancer</button>
+    </header>
+
+    <section class="target card">
+      <small>Cible</small>
+      <div class="target-url" id="targetUrl">…</div>
+      <div class="target-host" id="targetHost"></div>
+    </section>
+
+    <section class="score-card" id="scoreCard" data-level="loading">
+      <div class="gauge">
+        <svg viewBox="0 0 120 120" class="gauge-svg" aria-hidden="true">
+          <circle class="gauge-track" cx="60" cy="60" r="52"/>
+          <circle class="gauge-fill"  cx="60" cy="60" r="52" id="gaugeFill"/>
+        </svg>
+        <div class="gauge-text">
+          <div class="gauge-score" id="scoreValue">—</div>
+          <div class="gauge-max">/100</div>
+        </div>
+      </div>
+      <div class="score-meta">
+        <div class="score-label" id="scoreLabel">Analyse en cours…</div>
+        <div class="score-sub" id="scoreSub"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Facteurs détectés</h2>
+      <ul class="reasons" id="reasonsList">
+        <li class="empty">…</li>
+      </ul>
+    </section>
+
+    <section class="grid">
+      <div class="card metric">
+        <div class="metric-label">HTTPS</div>
+        <div class="metric-value" id="metricHttps">—</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-label">iframes externes</div>
+        <div class="metric-value" id="metricIframes">—</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-label">Scripts externes</div>
+        <div class="metric-value" id="metricScripts">—</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-label">Formulaires externes</div>
+        <div class="metric-value" id="metricForms">—</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-label">Scripts obfusqués</div>
+        <div class="metric-value" id="metricObf">—</div>
+      </div>
+      <div class="card metric">
+        <div class="metric-label">Contenu mixte</div>
+        <div class="metric-value" id="metricMixed">—</div>
+      </div>
+    </section>
+
+    <section class="card" id="originsCard">
+      <h2>Origines tierces détectées</h2>
+      <details>
+        <summary>iframes <span id="iframeOriginsCount">0</span></summary>
+        <ul class="origins" id="iframeOrigins"></ul>
+      </details>
+      <details>
+        <summary>scripts <span id="scriptOriginsCount">0</span></summary>
+        <ul class="origins" id="scriptOrigins"></ul>
+      </details>
+    </section>
+
+    <section class="card actions-card">
+      <h2>Actions</h2>
+      <div class="actions">
+        <button id="addBlockBtn" class="btn-danger">Ajouter ce domaine à la liste noire</button>
+        <button id="addWhiteBtn" class="btn-secondary">Ajouter à la liste blanche</button>
+      </div>
+    </section>
+
+    <p class="footer-note">L'analyse est entièrement locale. Aucune donnée n'est envoyée à un serveur.</p>
+  </main>
+
+  <script type="module" src="analyse.js"></script>
+</body>
+</html>

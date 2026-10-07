@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Bloqueur Streams Malveillants",
+  "version": "2.0.0",
+  "description": "Bloque au niveau réseau les sites de streaming malveillants, les iframes douteuses et les redirections (window.open, location.assign).",
+  "minimum_chrome_version": "102",
+  "permissions": [
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "storage",
+    "tabs",
+    "scripting",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content.js", "content/ad-overlay-killer.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Bloqueur Streams"
+  },
+  "options_page": "options.html",
+  "web_accessible_resources": [
+    {
+      "resources": ["warning.html", "content/main-world.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

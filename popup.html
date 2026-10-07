@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloqueur Streams</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>🛡️ Bloqueur Streams</h1>
+      <label class="switch" title="Activer / désactiver le blocage">
+        <input type="checkbox" id="enabled">
+        <span class="slider"></span>
+      </label>
+    </header>
+
+    <section class="status" data-state="on" id="statusBox">
+      <span id="statusText">Protection active</span>
+      <div class="dot"></div>
+    </section>
+
+    <section class="stats">
+      <div class="stat-row"><span>Sites bloqués</span><strong id="blockedCount">0</strong></div>
+      <div class="stat-row"><span>Clics interceptés</span><strong id="clicksCount">0</strong></div>
+      <div class="stat-row"><span>Redirections</span><strong id="redirectsCount">0</strong></div>
+      <div class="stat-row"><span>Popups bloqués</span><strong id="popupsCount">0</strong></div>
+      <div class="stat-row"><span>Pubs supprimées</span><strong id="adsKilledCount">0</strong></div>
+    </section>
+
+    <section class="current-site">
+      <small>Site actuel</small>
+      <div id="currentDomain">—</div>
+      <div class="badges" id="currentBadges"></div>
+    </section>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="analyseBtn">🔍 Analyser ce site</button>
+      <button class="btn btn-secondary" id="settingsBtn">⚙️ Options</button>
+      <button class="btn btn-secondary" id="whitelistBtn">✅ Liste blanche</button>
+      <button class="btn btn-secondary" id="resetBtn">🔄 Stats</button>
+    </div>
+
+    <details class="blocked-sites">
+      <summary>Domaines bloqués (<span id="domainsTotal">0</span>)</summary>
+      <ul id="domainsList"></ul>
+    </details>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres — Bloqueur Streams</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">🛡️</div>
+        <div>
+          <h1>Bloqueur Streams</h1>
+          <p class="brand-subtitle">Paramètres de l'extension</p>
+        </div>
+      </div>
+      <span class="version-pill">v2.0.0</span>
+    </header>
+
+    <nav class="section-nav" aria-label="Sections">
+      <a href="#section-status">État</a>
+      <a href="#section-popups">Popups</a>
+      <a href="#section-ads">Publicités</a>
+      <a href="#section-blocklist">Liste noire</a>
+      <a href="#section-whitelist">Liste blanche</a>
+      <a href="#section-patterns">Motifs</a>
+      <a href="#section-danger">Réinitialiser</a>
+    </nav>
+
+    <!-- État ----------------------------------------------------------- -->
+    <section id="section-status" class="card">
+      <div class="card-head">
+        <h2 class="card-title">État</h2>
+        <p class="card-sub">Active ou désactive globalement la protection.</p>
+      </div>
+      <div class="card-body">
+        <div class="setting">
+          <div class="setting-meta">
+            <span class="setting-label">Protection activée</span>
+            <span class="setting-desc">Coupe instantanément tous les blocages.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="enabled">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Anti-popup ----------------------------------------------------- -->
+    <section id="section-popups" class="card">
+      <div class="card-head">
+        <h2 class="card-title">Anti-popup &amp; anti-redirection</h2>
+        <p class="card-sub">
+          Sur les sites de streaming, un clic sur "Play" ouvre souvent un popup publicitaire ou redirige
+          vers un site malveillant. Bloque <strong>tout</strong> popup ou redirection vers une autre origine
+          que la page courante.
+        </p>
+      </div>
+      <div class="card-body">
+        <div class="setting">
+          <div class="setting-meta">
+            <span class="setting-label">Mode strict — bloquer absolument partout</span>
+            <span class="setting-desc">
+              Active le blocage des redirections cross-origin <strong>sur tous les sites, sans exception</strong> :
+              ignore la liste blanche et le toggle global, intercepte aussi <code>location.href</code>,
+              <code>&lt;meta refresh&gt;</code> et les clics/submits déclenchés par script.
+            </span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="strictRedirectMode">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+          </label>
+        </div>
+        <div class="setting">
+          <div class="setting-meta">
+            <span class="setting-label">Bloquer les popups inter-domaines</span>
+            <span class="setting-desc">Override <code>window.open</code> et anchors <code>target="_blank"</code>.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="blockCrossOriginPopups">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+          </label>
+        </div>
+        <div class="setting">
+          <div class="setting-meta">
+            <span class="setting-label">Bloquer les redirections inter-domaines</span>
+            <span class="setting-desc">Override <code>location.assign</code> et <code>location.replace</code>.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="blockCrossOriginRedirects">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Anti-modaux ---------------------------------------------------- -->
+    <section id="section-ads" class="card">
+      <div class="card-head">
+        <h2 class="card-title">Anti-modaux racoleurs</h2>
+        <p class="card-sub">
+          Détecte et supprime les modaux in-page de type <em>"Don't miss your chance"</em>,
+          <em>"70% off"</em>, <em>"vous avez gagné"</em>, et auto-refuse les demandes d'autorisation
+          de notifications.
+        </p>
+      </div>
+      <div class="card-body">
+        <div class="setting">
+          <div class="setting-meta">
+            <span class="setting-label">Supprimer les modaux publicitaires</span>
+            <span class="setting-desc">Scan + MutationObserver pendant 30 s après chargement.</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="blockAdOverlays">
+            <span class="switch-track"><span class="switch-thumb"></span></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Liste noire personnalisée ------------------------------------- -->
+    <section id="section-blocklist" class="card">
+      <div class="card-head">
+        <h2 class="card-title">
+          Liste noire <span class="badge">personnalisée</span>
+          <span class="count-pill" id="blocklistCount">0</span>
+        </h2>
+        <p class="card-sub">
+          Domaines bloqués au niveau réseau. Les sous-domaines sont inclus automatiquement.
+          Tu peux coller plusieurs domaines à la fois (séparés par espace, virgule ou retour à la ligne).
+        </p>
+      </div>
+      <div class="card-body">
+        <form id="addBlocklist" class="add-form" novalidate>
+          <input class="input" type="text" id="blocklistInput"
+                 placeholder="exemple-malveillant.com" autocomplete="off" spellcheck="false">
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+        <div class="feedback" id="blocklistFeedback" role="status" aria-live="polite"></div>
+        <ul class="list" id="blocklistList"></ul>
+        <details class="expander">
+          <summary>Voir les domaines bloqués par défaut (<span id="defaultsCount">0</span>)</summary>
+          <ul id="defaultsList"></ul>
+        </details>
+      </div>
+    </section>
+
+    <!-- Liste blanche -------------------------------------------------- -->
+    <section id="section-whitelist" class="card">
+      <div class="card-head">
+        <h2 class="card-title">
+          Liste blanche
+          <span class="count-pill" id="whitelistCount">0</span>
+        </h2>
+        <p class="card-sub">Domaines exemptés de tout blocage, même s'ils correspondent à la liste noire.</p>
+      </div>
+      <div class="card-body">
+        <form id="addWhitelist" class="add-form" novalidate>
+          <input class="input" type="text" id="whitelistInput"
+                 placeholder="domaine-de-confiance.com" autocomplete="off" spellcheck="false">
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+        <div class="feedback" id="whitelistFeedback" role="status" aria-live="polite"></div>
+        <ul class="list" id="whitelistList"></ul>
+      </div>
+    </section>
+
+    <!-- Motifs --------------------------------------------------------- -->
+    <section id="section-patterns" class="card">
+      <div class="card-head">
+        <h2 class="card-title">
+          Motifs suspects <span class="badge">personnalisés</span>
+          <span class="count-pill" id="patternCount">0</span>
+        </h2>
+        <p class="card-sub">
+          Sous-chaînes recherchées dans les URLs, en plus des motifs par défaut. Ex.&nbsp;:
+          <code>tracking</code>, <code>doubleclick</code>.
+        </p>
+      </div>
+      <div class="card-body">
+        <form id="addPattern" class="add-form" novalidate>
+          <input class="input" type="text" id="patternInput"
+                 placeholder="tracking" autocomplete="off" spellcheck="false">
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+        <div class="feedback" id="patternFeedback" role="status" aria-live="polite"></div>
+        <ul class="list" id="patternList"></ul>
+      </div>
+    </section>
+
+    <!-- Danger zone ---------------------------------------------------- -->
+    <section id="section-danger" class="card danger">
+      <div class="card-head">
+        <h2 class="card-title">Réinitialiser</h2>
+        <p class="card-sub">Efface toutes les listes personnalisées et remet les statistiques à zéro. Action irréversible.</p>
+      </div>
+      <div class="card-body">
+        <button id="resetAll" class="btn btn-danger">Tout réinitialiser</button>
+      </div>
+    </section>
+
+    <p class="footer-note">
+      Toutes les données restent locales. Aucune connexion réseau n'est initiée par l'extension.
+    </p>
+  </main>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

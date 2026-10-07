@@ -1,0 +1,136 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --card: rgba(255, 255, 255, 0.12);
+  --card-strong: rgba(255, 255, 255, 0.18);
+  --border: rgba(255, 255, 255, 0.18);
+  --text: #fff;
+  --muted: rgba(255, 255, 255, 0.75);
+  --green: #4ade80;
+  --grey: #9ca3af;
+  --red: #f87171;
+}
+
+body {
+  width: 340px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-grad);
+  color: var(--text);
+}
+
+.container { padding: 18px; }
+
+header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px;
+}
+
+h1 { font-size: 18px; font-weight: 600; }
+
+.switch { position: relative; display: inline-block; width: 44px; height: 24px; cursor: pointer; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; inset: 0;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 24px; transition: background .2s;
+}
+.slider::before {
+  content: ''; position: absolute; left: 3px; top: 3px;
+  width: 18px; height: 18px; background: white; border-radius: 50%;
+  transition: transform .2s;
+}
+.switch input:checked + .slider { background: var(--green); }
+.switch input:checked + .slider::before { transform: translateX(20px); }
+
+.status {
+  background: var(--card);
+  padding: 10px 14px;
+  border-radius: 8px;
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+}
+.status .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--green); animation: pulse 2s infinite;
+}
+.status[data-state="off"] .dot { background: var(--grey); animation: none; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+.stats {
+  background: var(--card-strong);
+  padding: 12px 14px; border-radius: 8px;
+  margin-bottom: 12px; font-size: 13px;
+}
+.stat-row {
+  display: flex; justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-row strong { font-variant-numeric: tabular-nums; }
+
+.current-site {
+  background: rgba(0, 0, 0, 0.18);
+  padding: 10px 14px; border-radius: 8px;
+  margin-bottom: 12px; font-size: 13px;
+}
+.current-site small { color: var(--muted); font-size: 11px; }
+.current-site #currentDomain {
+  font-weight: 600; word-break: break-all; margin-top: 2px;
+}
+.badges { margin-top: 6px; display: flex; gap: 6px; flex-wrap: wrap; }
+.badge {
+  font-size: 11px; padding: 2px 8px; border-radius: 10px;
+  background: rgba(255, 255, 255, 0.18);
+}
+.badge.danger { background: var(--red); color: #fff; }
+.badge.safe   { background: var(--green); color: #0b3d20; }
+
+.actions {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  margin-bottom: 12px;
+}
+.actions .btn-primary { grid-column: 1 / -1; }
+
+.btn {
+  padding: 10px;
+  border: none; border-radius: 6px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: transform .15s, box-shadow .15s, background .15s;
+}
+.btn-primary { background: white; color: #5b51b8; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,0.15); }
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.18);
+  color: white; border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.28); }
+
+.blocked-sites {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px 14px; border-radius: 8px; font-size: 12px;
+}
+.blocked-sites summary {
+  cursor: pointer; font-weight: 600;
+  list-style: none;
+}
+.blocked-sites summary::-webkit-details-marker { display: none; }
+.blocked-sites summary::before { content: '▶ '; font-size: 10px; }
+.blocked-sites[open] summary::before { content: '▼ '; }
+.blocked-sites ul {
+  list-style: none; margin-top: 8px;
+  max-height: 160px; overflow-y: auto;
+}
+.blocked-sites li {
+  padding: 3px 0; padding-left: 18px; position: relative;
+}
+.blocked-sites li::before {
+  content: '🚫'; position: absolute; left: 0;
+}
